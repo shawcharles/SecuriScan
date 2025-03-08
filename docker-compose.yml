@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  securiscan:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: securiscan:latest
+    container_name: securiscan
+    volumes:
+      - ./reports:/app/reports
+    environment:
+      - SECURISCAN_LOG_LEVEL=INFO
+    command: scan --help
+    # To run a scan, use a command like:
+    # command: scan https://example.com --level standard --output /app/reports/report.html
+
+  # Example of running continuous monitoring
+  # monitor:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: securiscan:latest
+  #   container_name: securiscan-monitor
+  #   volumes:
+  #     - ./reports:/app/reports
+  #   environment:
+  #     - SECURISCAN_LOG_LEVEL=INFO
+  #   command: monitor https://example.com --interval 3600 --output-dir /app/reports
