@@ -1,17 +1,10 @@
 """
-Core modules for SecuriScan.
+Core package for SecuriScan.
 
-This package provides core modules for the SecuriScan framework.
+This package provides the core functionality for the SecuriScan framework.
 """
 
-from securiscan.core.config import (
-    AuthConfig,
-    AuthType,
-    ProxyConfig,
-    ProxyType,
-    ScanConfig,
-    ScanLevel,
-)
+from securiscan.core.config import AuthConfig, AuthType, ProxyConfig, ScanConfig, ScanLevel
 from securiscan.core.exceptions import (
     AuthenticationError,
     BrowserError,
@@ -49,18 +42,29 @@ __all__ = [
     "AuthConfig",
     "AuthType",
     "ProxyConfig",
-    "ProxyType",
-    "MonitorConfig",
-    "NotificationConfig",
     
-    # Scanner
-    "Scanner",
-    "BaseScanner",
+    # Exceptions
+    "SecuriScanError",
+    "ConfigurationError",
+    "ConnectionError",
+    "ScanError",
+    "ValidationError",
+    "AuthenticationError",
+    "RateLimitError",
+    "TimeoutError",
+    "ParsingError",
+    "ModuleError",
+    "BrowserError",
+    "MonitorError",
+    "NotificationError",
+    "ReportingError",
     
     # Monitor
     "Monitor",
+    "MonitorConfig",
+    "NotificationConfig",
     
-    # Results
+    # Result
     "ScanResult",
     "ScanTarget",
     "ScanStatistics",
@@ -71,19 +75,7 @@ __all__ = [
     "VulnerabilityType",
     "TechnologyInfo",
     
-    # Exceptions
-    "SecuriScanError",
-    "ConfigurationError",
-    "ConnectionError",
-    "ScanError",
-    "ReportingError",
-    "ValidationError",
-    "AuthenticationError",
-    "RateLimitError",
-    "TimeoutError",
-    "ParsingError",
-    "ModuleError",
-    "BrowserError",
-    "MonitorError",
-    "NotificationError",
+    # Scanner
+    "Scanner",
+    "BaseScanner",
 ]

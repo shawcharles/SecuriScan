@@ -11,7 +11,6 @@ from securiscan.core.config import (
     AuthConfig,
     AuthType,
     ProxyConfig,
-    ProxyType,
     ScanConfig,
     ScanLevel,
 )
@@ -61,7 +60,6 @@ __all__ = [
     "AuthConfig",
     "AuthType",
     "ProxyConfig",
-    "ProxyType",
     "MonitorConfig",
     "NotificationConfig",
     

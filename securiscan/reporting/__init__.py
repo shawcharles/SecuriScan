@@ -1,7 +1,7 @@
 """
-Reporting modules for SecuriScan.
+Reporting package for SecuriScan.
 
-This package provides reporting modules for the SecuriScan framework.
+This package provides functionality for generating reports in different formats.
 """
 
 from securiscan.reporting.generator import ReportGenerator

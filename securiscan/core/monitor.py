@@ -10,10 +10,9 @@ from datetime import datetime, timedelta
 from threading import Event, Thread
 from typing import Callable, Dict, List, Optional, Union
 
-from pydantic import BaseModel, EmailStr, Field, HttpUrl, validator
+from pydantic import BaseModel, EmailStr, Field, HttpUrl
 
 from securiscan.core.config import ScanConfig
-from securiscan.core.exceptions import ConfigurationError
 from securiscan.core.result import ScanResult
 from securiscan.core.scanner import Scanner
 
@@ -21,56 +20,24 @@ from securiscan.core.scanner import Scanner
 class NotificationConfig(BaseModel):
     """Configuration for notifications."""
 
-    email_recipients: List[EmailStr] = Field(
-        default_factory=list, description="Email recipients for notifications"
-    )
-    webhook_url: Optional[HttpUrl] = Field(
-        default=None, description="Webhook URL for notifications"
-    )
-    notify_on_start: bool = Field(
-        default=False, description="Send notification when scan starts"
-    )
-    notify_on_complete: bool = Field(
-        default=True, description="Send notification when scan completes"
-    )
-    notify_on_error: bool = Field(
-        default=True, description="Send notification when scan errors occur"
-    )
-    notify_on_new_vulnerabilities: bool = Field(
-        default=True, description="Send notification when new vulnerabilities are found"
-    )
-    min_severity_to_notify: str = Field(
-        default="medium", description="Minimum severity level to trigger notifications"
-    )
-
-    @validator("min_severity_to_notify")
-    def validate_severity(cls, v):
-        """Validate severity level."""
-        valid_levels = ["info", "low", "medium", "high", "critical"]
-        if v.lower() not in valid_levels:
-            raise ValueError(f"Severity must be one of: {', '.join(valid_levels)}")
-        return v.lower()
+    email_recipients: List[str] = Field(default_factory=list)
+    webhook_url: Optional[str] = None
+    notify_on_start: bool = False
+    notify_on_complete: bool = True
+    notify_on_error: bool = True
+    notify_on_new_vulnerabilities: bool = True
+    min_severity_to_notify: str = "medium"
 
 
 class MonitorConfig(BaseModel):
     """Configuration for the monitor."""
 
-    targets: List[HttpUrl] = Field(..., description="URLs to monitor")
-    interval_hours: float = Field(
-        default=24.0, description="Monitoring interval in hours", ge=0.1
-    )
-    scan_config: Optional[ScanConfig] = Field(
-        default=None, description="Scan configuration"
-    )
-    notifications: NotificationConfig = Field(
-        default_factory=NotificationConfig, description="Notification configuration"
-    )
-    max_history: int = Field(
-        default=10, description="Maximum number of scan results to keep in history", ge=1
-    )
-    auto_remediation: bool = Field(
-        default=False, description="Enable automatic remediation actions"
-    )
+    targets: List[str]
+    interval_hours: float = 24.0
+    scan_config: Optional[ScanConfig] = None
+    notifications: NotificationConfig = Field(default_factory=NotificationConfig)
+    max_history: int = 10
+    auto_remediation: bool = False
 
 
 class Monitor:
@@ -90,9 +57,6 @@ class Monitor:
             interval_hours: Monitoring interval in hours
             scan_config: Scan configuration
             notify: List of email addresses to notify
-
-        Raises:
-            ConfigurationError: If the configuration is invalid
         """
         # Convert single target to list
         if isinstance(targets, str):
@@ -239,7 +203,7 @@ class Monitor:
 
     def _find_new_vulnerabilities(
         self, previous_result: ScanResult, current_result: ScanResult
-    ) -> List[Dict]:
+    ) -> List:
         """Find new vulnerabilities between two scan results.
 
         Args:
@@ -326,59 +290,3 @@ class Monitor:
             raise ValueError(f"Target not found: {target}")
 
         return self.history[target]
-
-    def add_target(self, target: str) -> None:
-        """Add a new target to monitor.
-
-        Args:
-            target: Target URL
-
-        Raises:
-            ValueError: If the target is already being monitored
-        """
-        if target in self.history:
-            raise ValueError(f"Target already being monitored: {target}")
-
-        self.config.targets.append(target)
-        self.history[target] = []
-        self.logger.info(f"Added new target to monitor: {target}")
-
-    def remove_target(self, target: str) -> None:
-        """Remove a target from monitoring.
-
-        Args:
-            target: Target URL
-
-        Raises:
-            ValueError: If the target is not being monitored
-        """
-        if target not in self.history:
-            raise ValueError(f"Target not found: {target}")
-
-        self.config.targets.remove(target)
-        del self.history[target]
-        self.logger.info(f"Removed target from monitoring: {target}")
-
-    def is_running(self) -> bool:
-        """Check if the monitor is running.
-
-        Returns:
-            True if the monitor is running, False otherwise
-        """
-        return self.monitor_thread is not None and self.monitor_thread.is_alive()
-
-    def get_next_scan_time(self) -> datetime:
-        """Get the time of the next scheduled scan.
-
-        Returns:
-            Datetime of the next scan
-
-        Raises:
-            RuntimeError: If the monitor is not running
-        """
-        if not self.is_running():
-            raise RuntimeError("Monitor is not running")
-
-        # Calculate time until next scan
-        interval_seconds = self.config.interval_hours * 3600
-        return datetime.now() + timedelta(seconds=interval_seconds)

@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 """
-Custom Scanner Example.
+Modified Custom Scanner Example.
 
-This example demonstrates how to create a custom scanner module for the SecuriScan framework.
+This example demonstrates how to create a custom scanner module for the SecuriScan framework,
+with proper report generation using the ReportGenerator class.
 """
 
 import argparse
@@ -29,6 +30,7 @@ from securiscan import (
     Vulnerability,
     VulnerabilityType,
 )
+from securiscan.reporting.generator import ReportGenerator
 
 
 class CustomScanner(BaseScanner):
@@ -154,7 +156,7 @@ def parse_arguments() -> argparse.Namespace:
     Returns:
         Parsed arguments
     """
-    parser = argparse.ArgumentParser(description="SecuriScan Custom Scanner Example")
+    parser = argparse.ArgumentParser(description="SecuriScan Modified Custom Scanner Example")
     parser.add_argument("url", help="Target URL to scan")
     parser.add_argument(
         "--output",
@@ -246,7 +248,9 @@ def main() -> int:
         
         # Generate report if output file is specified
         if args.output:
-            result.generate_report(args.output, "html")
+            # Use ReportGenerator instead of result.generate_report
+            report_generator = ReportGenerator(result)
+            report_generator.generate(args.output, "html")
             print(f"\nReport saved to {args.output}")
         
         return 0

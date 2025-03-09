@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+setup.py
+securiscan/__init__.py
+securiscan.egg-info/PKG-INFO
+securiscan.egg-info/SOURCES.txt
+securiscan.egg-info/dependency_links.txt
+securiscan.egg-info/entry_points.txt
+securiscan.egg-info/requires.txt
+securiscan.egg-info/top_level.txt

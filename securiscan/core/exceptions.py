@@ -70,22 +70,6 @@ class ScanError(SecuriScanError):
         super().__init__(message, *args, **kwargs)
 
 
-class ReportingError(SecuriScanError):
-    """Exception raised for reporting errors."""
-
-    def __init__(self, message: str, format_type: Optional[str] = None, *args, **kwargs):
-        """Initialize the exception.
-
-        Args:
-            message: Error message
-            format_type: Report format that caused the error
-            *args: Additional positional arguments
-            **kwargs: Additional keyword arguments
-        """
-        self.format_type = format_type
-        super().__init__(message, *args, **kwargs)
-
-
 class ValidationError(SecuriScanError):
     """Exception raised for validation errors."""
 
@@ -227,4 +211,20 @@ class NotificationError(SecuriScanError):
             **kwargs: Additional keyword arguments
         """
         self.notification_type = notification_type
+        super().__init__(message, *args, **kwargs)
+
+
+class ReportingError(SecuriScanError):
+    """Exception raised for reporting errors."""
+
+    def __init__(self, message: str, format_type: Optional[str] = None, *args, **kwargs):
+        """Initialize the exception.
+
+        Args:
+            message: Error message
+            format_type: Report format that caused the error
+            *args: Additional positional arguments
+            **kwargs: Additional keyword arguments
+        """
+        self.format_type = format_type
         super().__init__(message, *args, **kwargs)

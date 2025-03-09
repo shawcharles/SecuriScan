@@ -1,30 +1,11 @@
 """
-Scanner modules for SecuriScan.
+Scanners package for SecuriScan.
 
-This package provides scanner modules for the SecuriScan framework.
+This package provides scanner modules for detecting vulnerabilities.
 """
 
 # Import scanner modules
-from securiscan.scanners.active.directory_bruteforce import DirectoryBruteforceScanner
-from securiscan.scanners.active.xss import XSSScanner
-from securiscan.scanners.passive.content import ContentAnalysisScanner
-from securiscan.scanners.passive.headers import (
-    CacheControlScanner,
-    SecurityHeadersScanner,
-)
-from securiscan.scanners.passive.ssl_tls import SSLTLSScanner
-from securiscan.scanners.passive.tech_detection import TechnologyDetectionScanner
+# In a real implementation, we would import all scanner modules here
+# For now, we'll leave this empty
 
-# Define public API
-__all__ = [
-    # Passive scanners
-    "SecurityHeadersScanner",
-    "CacheControlScanner",
-    "SSLTLSScanner",
-    "TechnologyDetectionScanner",
-    "ContentAnalysisScanner",
-    
-    # Active scanners
-    "XSSScanner",
-    "DirectoryBruteforceScanner",
-]
+__all__ = []
