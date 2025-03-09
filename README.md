@@ -1,19 +1,19 @@
-# SecuriScan
+# SecuriScan (work in progress)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python Versions](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue)](https://www.python.org/)
 [![Documentation Status](https://readthedocs.org/projects/securiscan/badge/?version=latest)](https://securiscan.readthedocs.io/en/latest/?badge=latest)
 [![Author](https://img.shields.io/badge/Author-Charles%20Shaw-brightgreen)](https://github.com/shawcharles)
 
-**SecuriScan** is a professional web security testing framework designed to identify vulnerabilities in web applications. It provides a comprehensive set of tools for security professionals, penetration testers, and developers to assess the security posture of web applications.
+**SecuriScan** is a web security testing framework designed to identify vulnerabilities in web applications. It provides a set of tools for security professionals, penetration testers, and developers to assess the security posture of web applications.
 
 ## Features
 
-- **Comprehensive Security Scanning**: Detect common web vulnerabilities including OWASP Top 10
+- **Security Scanning**: Detect common web vulnerabilities including OWASP Top 10
 - **Passive Scanning**: Analyze websites without sending potentially harmful requests
 - **Active Scanning**: Perform thorough security testing with configurable intensity levels
 - **Continuous Monitoring**: Monitor websites for security issues over time
-- **Detailed Reporting**: Generate comprehensive reports in multiple formats (HTML, JSON, CSV, PDF)
+- **Detailed Reporting**: Generate reports in multiple formats (HTML, JSON, CSV, PDF)
 - **Extensible Architecture**: Easily add custom scanners and modules
 - **Command-line Interface**: Powerful CLI for automation and integration
 - **Programmatic API**: Use as a library in your Python applications

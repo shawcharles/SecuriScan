@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="4" failures="0" skipped="0" tests="4" time="1.598" timestamp="2025-03-09T10:18:09.176592+00:00" hostname="laptop1"><testcase classname="tests.core.test_monitor" name="test_monitor_initialization" time="0.005"><error message="failed on setup with &quot;pydantic_core._pydantic_core.ValidationError: 3 validation errors for ScanTarget&#10;hostname&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&#10;port&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&#10;scheme&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&quot;">@pytest.fixture
+    def mock_scanner():
+        with patch('securiscan.core.scanner.Scanner') as MockScanner:
+            mock_scanner = MockScanner.return_value
+            from securiscan.core.result import ScanTarget, ScanStatistics, ScanResult
+    
+            mock_scanner.scan.return_value = ScanResult(
+                id="12345",
+&gt;               target=ScanTarget(url="http://example.com"),
+                vulnerabilities=[],
+                statistics=ScanStatistics(end_time=datetime.now()),
+                scan_config=ScanConfig(),
+                version="1.0.0"
+            )
+E           pydantic_core._pydantic_core.ValidationError: 3 validation errors for ScanTarget
+E           hostname
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+E           port
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+E           scheme
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+
+tests\core\test_monitor.py:18: ValidationError</error></testcase><testcase classname="tests.core.test_monitor" name="test_monitor_start_stop" time="0.002"><error message="failed on setup with &quot;pydantic_core._pydantic_core.ValidationError: 3 validation errors for ScanTarget&#10;hostname&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&#10;port&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&#10;scheme&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&quot;">@pytest.fixture
+    def mock_scanner():
+        with patch('securiscan.core.scanner.Scanner') as MockScanner:
+            mock_scanner = MockScanner.return_value
+            from securiscan.core.result import ScanTarget, ScanStatistics, ScanResult
+    
+            mock_scanner.scan.return_value = ScanResult(
+                id="12345",
+&gt;               target=ScanTarget(url="http://example.com"),
+                vulnerabilities=[],
+                statistics=ScanStatistics(end_time=datetime.now()),
+                scan_config=ScanConfig(),
+                version="1.0.0"
+            )
+E           pydantic_core._pydantic_core.ValidationError: 3 validation errors for ScanTarget
+E           hostname
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+E           port
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+E           scheme
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+
+tests\core\test_monitor.py:18: ValidationError</error></testcase><testcase classname="tests.core.test_monitor" name="test_send_email_notification" time="0.002"><error message="failed on setup with &quot;pydantic_core._pydantic_core.ValidationError: 3 validation errors for ScanTarget&#10;hostname&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&#10;port&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&#10;scheme&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&quot;">@pytest.fixture
+    def mock_scanner():
+        with patch('securiscan.core.scanner.Scanner') as MockScanner:
+            mock_scanner = MockScanner.return_value
+            from securiscan.core.result import ScanTarget, ScanStatistics, ScanResult
+    
+            mock_scanner.scan.return_value = ScanResult(
+                id="12345",
+&gt;               target=ScanTarget(url="http://example.com"),
+                vulnerabilities=[],
+                statistics=ScanStatistics(end_time=datetime.now()),
+                scan_config=ScanConfig(),
+                version="1.0.0"
+            )
+E           pydantic_core._pydantic_core.ValidationError: 3 validation errors for ScanTarget
+E           hostname
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+E           port
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+E           scheme
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+
+tests\core\test_monitor.py:18: ValidationError</error></testcase><testcase classname="tests.core.test_monitor" name="test_trigger_callbacks" time="0.002"><error message="failed on setup with &quot;pydantic_core._pydantic_core.ValidationError: 3 validation errors for ScanTarget&#10;hostname&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&#10;port&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&#10;scheme&#10;  Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.10/v/missing&quot;">@pytest.fixture
+    def mock_scanner():
+        with patch('securiscan.core.scanner.Scanner') as MockScanner:
+            mock_scanner = MockScanner.return_value
+            from securiscan.core.result import ScanTarget, ScanStatistics, ScanResult
+    
+            mock_scanner.scan.return_value = ScanResult(
+                id="12345",
+&gt;               target=ScanTarget(url="http://example.com"),
+                vulnerabilities=[],
+                statistics=ScanStatistics(end_time=datetime.now()),
+                scan_config=ScanConfig(),
+                version="1.0.0"
+            )
+E           pydantic_core._pydantic_core.ValidationError: 3 validation errors for ScanTarget
+E           hostname
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+E           port
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+E           scheme
+E             Field required [type=missing, input_value={'url': 'http://example.com'}, input_type=dict]
+E               For further information visit https://errors.pydantic.dev/2.10/v/missing
+
+tests\core\test_monitor.py:18: ValidationError</error></testcase></testsuite></testsuites>

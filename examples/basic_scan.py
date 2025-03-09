@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 """
-Basic Scan Example.
+Modified Basic Scan Example.
 
-This example demonstrates how to use the SecuriScan framework to perform a basic security scan on a website.
+This example demonstrates how to use the SecuriScan framework to perform a basic security scan on a website,
+with proper report generation using the ReportGenerator class.
 """
 
 import argparse
@@ -20,6 +21,7 @@ from securiscan import (
     Scanner,
     Vulnerability,
 )
+from securiscan.reporting.generator import ReportGenerator
 
 
 def setup_logging() -> None:
@@ -37,7 +39,7 @@ def parse_arguments() -> argparse.Namespace:
     Returns:
         Parsed arguments
     """
-    parser = argparse.ArgumentParser(description="SecuriScan Basic Example")
+    parser = argparse.ArgumentParser(description="SecuriScan Modified Basic Example")
     parser.add_argument("url", help="Target URL to scan")
     parser.add_argument(
         "--level",
@@ -203,7 +205,9 @@ def main() -> int:
         
         # Generate report if output file is specified
         if args.output:
-            result.generate_report(args.output, "html")
+            # Use ReportGenerator instead of result.generate_report
+            report_generator = ReportGenerator(result)
+            report_generator.generate(args.output, "html")
             print(f"\nReport saved to {args.output}")
         
         return 0

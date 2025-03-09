@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 """
-Continuous Monitoring Example.
+Modified Continuous Monitoring Example.
 
-This example demonstrates how to use the SecuriScan framework to continuously monitor a website for security issues.
+This example demonstrates how to use the SecuriScan framework to continuously monitor a website for security issues,
+with proper report generation using the ReportGenerator class.
 """
 
 import argparse
 import logging
+import os
 import sys
 import time
 from typing import List, Optional
@@ -22,6 +24,7 @@ from securiscan import (
     ScanLevel,
     Vulnerability,
 )
+from securiscan.reporting.generator import ReportGenerator
 
 
 def setup_logging() -> None:
@@ -39,7 +42,7 @@ def parse_arguments() -> argparse.Namespace:
     Returns:
         Parsed arguments
     """
-    parser = argparse.ArgumentParser(description="SecuriScan Continuous Monitoring Example")
+    parser = argparse.ArgumentParser(description="SecuriScan Modified Continuous Monitoring Example")
     parser.add_argument("url", help="Target URL to monitor")
     parser.add_argument(
         "--interval",
@@ -295,6 +298,18 @@ def main() -> int:
             # Print vulnerabilities
             print("\nVulnerabilities:")
             print_vulnerabilities(result.vulnerabilities)
+            
+            # Generate report
+            timestamp = time.strftime("%Y%m%d_%H%M%S")
+            report_filename = f"{args.output_dir}/scan_{timestamp}.html"
+            
+            # Create directory if it doesn't exist
+            os.makedirs(args.output_dir, exist_ok=True)
+            
+            # Use ReportGenerator instead of result.generate_report
+            report_generator = ReportGenerator(result)
+            report_generator.generate(report_filename, "html")
+            print(f"\nReport saved to {report_filename}")
             
             # Print next scan time
             next_scan_time = time.time() + args.interval
