@@ -2,7 +2,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python Versions](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue)](https://www.python.org/)
-[![PyPI version](https://badge.fury.io/py/securiscan.svg)](https://badge.fury.io/py/securiscan)
 [![Documentation Status](https://readthedocs.org/projects/securiscan/badge/?version=latest)](https://securiscan.readthedocs.io/en/latest/?badge=latest)
 [![Author](https://img.shields.io/badge/Author-Charles%20Shaw-brightgreen)](https://github.com/shawcharles)
 
@@ -21,37 +20,35 @@
 
 ## Installation
 
-### From PyPI
-
-```bash
-pip install securiscan
-```
-
-### With Optional Dependencies
-
-```bash
-# For browser automation
-pip install securiscan[browser]
-
-# For PDF report generation
-pip install securiscan[pdf]
-
-# For development
-pip install securiscan[dev]
-
-# For documentation
-pip install securiscan[docs]
-
-# All optional dependencies
-pip install securiscan[all]
-```
+SecuriScan is not currently available on PyPI and must be installed from source.
 
 ### From Source
 
 ```bash
 git clone https://github.com/shawcharles/SecuriScan.git
-cd securiscan
+cd SecuriScan
 pip install -e .
+```
+
+### With Optional Dependencies
+
+After installing from source, you can add optional dependencies:
+
+```bash
+# For browser automation
+pip install -e ".[browser]"
+
+# For PDF report generation
+pip install -e ".[pdf]"
+
+# For development
+pip install -e ".[dev]"
+
+# For documentation
+pip install -e ".[docs]"
+
+# All optional dependencies
+pip install -e ".[all]"
 ```
 
 ## Quick Start
