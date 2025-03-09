@@ -127,9 +127,13 @@ def scan_command(
     screenshot: bool = typer.Option(
         False, "--screenshot", "-s", help="Take screenshots as evidence (requires --browser)"
     ),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Enable verbose output"),
 ) -> None:
     """Perform a security scan on a target URL."""
     try:
+        # Set up logging
+        setup_logging(verbose)
+        
         # Parse scan level
         try:
             scan_level = ScanLevel(level.lower())

@@ -115,6 +115,7 @@ class ScanStatistics(BaseModel):
 class TechnologyInfo(BaseModel):
     """Information about detected technologies."""
 
+    version: Optional[str] = None
     server: Optional[str] = None
     cms: Optional[str] = None
     programming_languages: List[str] = Field(default_factory=list)
@@ -126,7 +127,6 @@ class TechnologyInfo(BaseModel):
     waf: Optional[str] = None
     operating_system: Optional[str] = None
     database: Optional[str] = None
-
 
 class ScanTarget(BaseModel):
     """Information about the scan target."""

@@ -10,15 +10,19 @@ from typing import Optional
 class SecuriScanError(Exception):
     """Base exception for all SecuriScan errors."""
 
-    def __init__(self, message: str, *args, **kwargs):
+    def __init__(self, message: str, details: Optional[dict] = None, cause: Optional[Exception] = None, *args, **kwargs):
         """Initialize the exception.
 
         Args:
             message: Error message
+            details: Additional details about the error
+            cause: Original exception that caused this error
             *args: Additional positional arguments
             **kwargs: Additional keyword arguments
         """
         self.message = message
+        self.details = details
+        self.cause = cause
         super().__init__(message, *args)
 
 
@@ -57,33 +61,49 @@ class ConnectionError(SecuriScanError):
 class ScanError(SecuriScanError):
     """Exception raised for scan errors."""
 
-    def __init__(self, message: str, scan_id: Optional[str] = None, *args, **kwargs):
+    def __init__(self, message: str, scan_id: Optional[str] = None, target_url: Optional[str] = None, *args, **kwargs):
         """Initialize the exception.
 
         Args:
             message: Error message
             scan_id: ID of the scan that caused the error
+            target_url: URL of the target that caused the error
             *args: Additional positional arguments
             **kwargs: Additional keyword arguments
         """
         self.scan_id = scan_id
-        super().__init__(message, *args, **kwargs)
+        self.target_url = target_url
+        details = {}
+        if target_url:
+            details["target_url"] = target_url
+        super().__init__(message, details=details, *args, **kwargs)
 
 
 class ValidationError(SecuriScanError):
     """Exception raised for validation errors."""
 
-    def __init__(self, message: str, field: Optional[str] = None, *args, **kwargs):
+    def __init__(self, message: str, field: Optional[str] = None, field_name: Optional[str] = None, field_value: Optional[str] = None, *args, **kwargs):
         """Initialize the exception.
 
         Args:
             message: Error message
             field: Name of the field that failed validation
+            field_name: Alias for field
+            field_value: Value of the field that failed validation
             *args: Additional positional arguments
             **kwargs: Additional keyword arguments
         """
         self.field = field
-        super().__init__(message, *args, **kwargs)
+        self.field_name = field_name or field
+        self.field_value = field_value
+        
+        details = {}
+        if field_name:
+            details["field_name"] = field_name
+        if field_value:
+            details["field_value"] = field_value
+            
+        super().__init__(message, details=details, *args, **kwargs)
 
 
 class AuthenticationError(SecuriScanError):
@@ -99,39 +119,60 @@ class AuthenticationError(SecuriScanError):
             **kwargs: Additional keyword arguments
         """
         self.auth_type = auth_type
-        super().__init__(message, *args, **kwargs)
+        details = {}
+        if auth_type:
+            details["auth_type"] = auth_type
+        super().__init__(message, details=details, *args, **kwargs)
 
 
 class RateLimitError(SecuriScanError):
     """Exception raised for rate limiting errors."""
 
-    def __init__(self, message: str, retry_after: Optional[int] = None, *args, **kwargs):
+    def __init__(self, message: str, retry_after: Optional[int] = None, url: Optional[str] = None, *args, **kwargs):
         """Initialize the exception.
 
         Args:
             message: Error message
             retry_after: Seconds to wait before retrying
+            url: URL that triggered the rate limit
             *args: Additional positional arguments
             **kwargs: Additional keyword arguments
         """
         self.retry_after = retry_after
-        super().__init__(message, *args, **kwargs)
+        self.url = url
+        
+        details = {}
+        if retry_after:
+            details["retry_after"] = retry_after
+        if url:
+            details["url"] = url
+            
+        super().__init__(message, details=details, *args, **kwargs)
 
 
 class TimeoutError(SecuriScanError):
     """Exception raised for timeout errors."""
 
-    def __init__(self, message: str, timeout: Optional[int] = None, *args, **kwargs):
+    def __init__(self, message: str, timeout: Optional[int] = None, url: Optional[str] = None, *args, **kwargs):
         """Initialize the exception.
 
         Args:
             message: Error message
             timeout: Timeout value that was exceeded
+            url: URL that timed out
             *args: Additional positional arguments
             **kwargs: Additional keyword arguments
         """
         self.timeout = timeout
-        super().__init__(message, *args, **kwargs)
+        self.url = url
+        
+        details = {}
+        if timeout:
+            details["timeout"] = timeout
+        if url:
+            details["url"] = url
+            
+        super().__init__(message, details=details, *args, **kwargs)
 
 
 class ParsingError(SecuriScanError):
@@ -217,14 +258,23 @@ class NotificationError(SecuriScanError):
 class ReportingError(SecuriScanError):
     """Exception raised for reporting errors."""
 
-    def __init__(self, message: str, format_type: Optional[str] = None, *args, **kwargs):
+    def __init__(self, message: str, format_type: Optional[str] = None, output_path: Optional[str] = None, *args, **kwargs):
         """Initialize the exception.
 
         Args:
             message: Error message
             format_type: Report format that caused the error
+            output_path: Path where the report was being written
             *args: Additional positional arguments
             **kwargs: Additional keyword arguments
         """
         self.format_type = format_type
-        super().__init__(message, *args, **kwargs)
+        self.output_path = output_path
+        
+        details = {}
+        if format_type:
+            details["format_type"] = format_type
+        if output_path:
+            details["output_path"] = output_path
+            
+        super().__init__(message, details=details, *args, **kwargs)

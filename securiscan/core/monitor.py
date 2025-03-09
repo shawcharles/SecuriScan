@@ -12,21 +12,9 @@ from typing import Callable, Dict, List, Optional, Union
 
 from pydantic import BaseModel, EmailStr, Field, HttpUrl
 
-from securiscan.core.config import ScanConfig
+from securiscan.core.config import ScanConfig, NotificationConfig
 from securiscan.core.result import ScanResult
 from securiscan.core.scanner import Scanner
-
-
-class NotificationConfig(BaseModel):
-    """Configuration for notifications."""
-
-    email_recipients: List[str] = Field(default_factory=list)
-    webhook_url: Optional[str] = None
-    notify_on_start: bool = False
-    notify_on_complete: bool = True
-    notify_on_error: bool = True
-    notify_on_new_vulnerabilities: bool = True
-    min_severity_to_notify: str = "medium"
 
 
 class MonitorConfig(BaseModel):
@@ -65,7 +53,14 @@ class Monitor:
         # Create notification config if emails provided
         notifications = NotificationConfig()
         if notify:
-            notifications.email_recipients = notify
+            notifications.enable_email(
+                recipient_email=notify[0],
+                smtp_server="smtp.example.com",
+                smtp_port=587,
+                smtp_username="smtp_user",
+                smtp_password="smtp_pass",
+                smtp_use_tls=True,
+            )
 
         # Create monitor config
         self.config = MonitorConfig(
@@ -86,6 +81,31 @@ class Monitor:
             "on_error": [],
             "on_new_vulnerabilities": [],
         }
+
+    def _send_email_notification(self, result: ScanResult) -> None:
+        """Send an email notification for a scan result.
+
+        Args:
+            result: Scan result
+        """
+        if not self.config.notifications.email_enabled:
+            return
+
+        # Construct the email message
+        message = f"Subject: SecuriScan Alert\n\nScan of {result.target.url} completed.\n"
+        message += f"Vulnerabilities found: {len(result.vulnerabilities)}\n"
+        message += f"Timestamp: {result.statistics.end_time}\n"
+
+        # Send the email
+        with smtplib.SMTP(self.config.notifications.smtp_server, self.config.notifications.smtp_port) as server:
+            server.starttls()
+            server.login(self.config.notifications.smtp_username, self.config.notifications.smtp_password)
+            server.sendmail(
+                self.config.notifications.smtp_username,
+                self.config.notifications.recipient_email,
+                message,
+            )
+        self.logger.info("Email notification sent")
 
     def start(self, run_immediately: bool = True) -> None:
         """Start the monitoring process.
@@ -254,6 +274,12 @@ class Monitor:
             except Exception as e:
                 self.logger.error(f"Error in {event} callback: {str(e)}", exc_info=True)
 
+        if event == "on_complete" and self.config.notifications.notify_on_complete:
+            self._send_email_notification(kwargs["result"])
+
+        if event == "on_error" and self.config.notifications.notify_on_error:
+            self._send_email_notification(kwargs["result"])
+
     def get_last_result(self, target: str) -> Optional[ScanResult]:
         """Get the most recent scan result for a target.
 
@@ -287,6 +313,4 @@ class Monitor:
             ValueError: If the target is not being monitored
         """
         if target not in self.history:
-            raise ValueError(f"Target not found: {target}")
-
-        return self.history[target]
+            raise
